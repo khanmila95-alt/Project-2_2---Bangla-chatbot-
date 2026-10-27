@@ -1,0 +1,200 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Noto Serif}
+\newfontfamily\bangla{Noto Sans Bengali}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,booktabs,longtable,hyperref,float,enumitem}
+\usepackage{pgfgantt}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single}
+
+\title{\textbf{Bangla Chatbot on Raspberry Pi}\\
+\large Project Proposal (Version 1.0)}
+\author{Your Name \\ Student ID: XXXXXXX \\ Course: Software Engineering \\ Instructor: XXXXX}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\begin{abstract}
+This proposal describes a Bangla-language chatbot running on a Raspberry Pi.
+Users type (and optionally speak) questions in Bangla and receive Bangla answers
+from a local knowledge base, without depending on a cloud service. The project
+follows an Iterative-Incremental process over 15 weeks and produces a working
+prototype, UML documentation, tests, and a user manual.
+\end{abstract}
+
+\section{Introduction}
+Most chatbots serve English speakers well, while Bangla speakers (over 230 million
+people) have few lightweight, offline-capable tools. A Raspberry Pi is cheap, small,
+and suitable for schools, libraries, and help desks. This project builds a
+Bangla Q\&A assistant that runs entirely on it.
+
+\section{Problem Statement}
+Existing assistants have weak Bangla support, need constant internet, and run on
+expensive hardware. There is no low-cost, offline, Bangla-first assistant for
+small institutions.
+
+\section{Objectives}
+\begin{itemize}[noitemsep]
+  \item Build a chatbot that understands and replies in Bangla.
+  \item Run it on a Raspberry Pi (Raspberry Pi OS, Python 3).
+  \item Store conversations and a knowledge base in SQLite.
+  \item Provide a simple GUI and an admin way to extend the knowledge base.
+  \item (Optional) Add Bangla speech input/output.
+\end{itemize}
+
+\section{Scope}
+\textbf{In scope:} text chat in Bangla, rule/keyword-based intent matching,
+FAQ-style domain (e.g.\ campus information), conversation history, admin editing of answers.\\
+\textbf{Out of scope:} large language models, multi-language support, mobile app,
+cloud deployment.
+
+\section{Literature Review / Existing Systems}
+\begin{tabular}{@{}lll@{}}
+\toprule
+System & Strength & Limitation \\
+\midrule
+Google Assistant & Strong Bangla voice & Online only, closed \\
+ChatGPT-style LLMs & Fluent text & Heavy, online, costly \\
+Rasa (open source) & Flexible NLU & Heavy for Raspberry Pi, weak Bangla \\
+\textbf{Proposed system} & Offline, light, Bangla-first & Limited to its knowledge base \\
+\bottomrule
+\end{tabular}
+
+\section{Feasibility Study}
+\textbf{Technical:} Python, Tkinter, and SQLite run well on Raspberry Pi 4.
+\textbf{Economic:} Total hardware cost is low (see Section~\ref{sec:budget}).
+\textbf{Operational:} Simple GUI, no training needed for users.
+\textbf{Schedule:} 15 weeks is sufficient for the defined scope.
+
+\section{Requirements}
+\subsection{Functional Requirements}
+\begin{enumerate}[noitemsep]
+  \item FR1: User can type a Bangla question and receive a Bangla answer.
+  \item FR2: System tokenizes and normalizes Bangla text.
+  \item FR3: System matches the question to a knowledge-base entry.
+  \item FR4: System shows a fallback reply when no match is found.
+  \item FR5: System saves every message with a timestamp.
+  \item FR6: Admin can add, edit, and delete knowledge entries.
+  \item FR7: User can give feedback (helpful / not helpful).
+\end{enumerate}
+\subsection{Non-Functional Requirements}
+Response time under 2 seconds; correct Bangla Unicode display; runs on 2 GB RAM;
+modular code (each class has one responsibility); works offline.
+
+\section{Methodology: Iterative-Incremental Model}
+Each increment delivers working software and goes through
+requirements $\rightarrow$ design $\rightarrow$ implementation $\rightarrow$ testing.
+This suits the project because the NLP part needs repeated tuning with real
+test sentences, and early increments give feedback for later ones.
+
+\section{System Architecture}
+Layers: (1) Presentation: \texttt{ChatUI}; (2) Logic: \texttt{ChatBot}, \texttt{BanglaNLP};
+(3) Data: \texttt{KnowledgeBase}, \texttt{ChatRepository} (SQLite).
+\textbf{Hardware:} Raspberry Pi 4 (2/4 GB), microSD 32 GB, display, keyboard,
+optional USB microphone and speaker.
+\textbf{Software:} Raspberry Pi OS, Python 3, Tkinter, SQLite3, Git, Noto Sans Bengali font.
+
+\section{Project Schedule}
+\subsection{Phases and Deliverables}
+\begin{longtable}{@{}p{2.2cm}p{2cm}p{4.3cm}p{5cm}@{}}
+\toprule
+Increment & Weeks & Activities & Deliverables \\
+\midrule
+1 & 1--2 & Planning, requirements, feasibility & Proposal, SRS \\
+2 & 3--4 & UML and database design & DFD, Use Case, Activity, ERD, Class, Object diagrams \\
+3 & 5--7 & Core chatbot, Bangla NLP, knowledge base & Console prototype \\
+4 & 8--10 & GUI, SQLite storage, Raspberry Pi setup & GUI prototype on Pi \\
+5 & 11--12 & Admin module, feedback, optional voice & Feature-complete build \\
+6 & 13--14 & Testing and bug fixing & Test report \\
+7 & 15 & Documentation, final demo & User manual, final report, GitHub release \\
+\bottomrule
+\end{longtable}
+
+\subsection{Milestones}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ID & Milestone & Week \\
+\midrule
+M1 & Proposal and requirements approved & 2 \\
+M2 & Design complete (all UML diagrams) & 4 \\
+M3 & Console chatbot answers Bangla questions & 7 \\
+M4 & GUI prototype running on Raspberry Pi & 10 \\
+M5 & Feature complete & 12 \\
+M6 & Testing finished & 14 \\
+M7 & Final submission & 15 \\
+\bottomrule
+\end{tabular}
+
+\subsection{Gantt Chart}
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{ganttchart}[hgrid,vgrid,x unit=0.55cm,y unit chart=0.6cm,
+  title height=1,bar height=0.5,bar/.append style={fill=blue!50},
+  milestone/.append style={fill=red!70}]{1}{15}
+\gantttitle{Week}{15}\\
+\gantttitlelist{1,...,15}{1}\\
+\ganttbar{Planning \& Requirements}{1}{2}\\
+\ganttbar{UML \& Database Design}{3}{4}\\
+\ganttbar{Core Chatbot \& NLP}{5}{7}\\
+\ganttbar{GUI, DB \& Pi Setup}{8}{10}\\
+\ganttbar{Admin, Feedback, Voice}{11}{12}\\
+\ganttbar{Testing}{13}{14}\\
+\ganttbar{Documentation \& Demo}{15}{15}\\
+\ganttmilestone{M1}{2} \ganttmilestone{M2}{4} \ganttmilestone{M3}{7}
+\ganttmilestone{M4}{10} \ganttmilestone{M5}{12} \ganttmilestone{M6}{14}
+\ganttmilestone{M7}{15}
+\end{ganttchart}}
+\caption{Project Gantt chart}
+\end{figure}
+
+\section{Risk Analysis}
+\begin{tabular}{@{}p{4.5cm}p{1.8cm}p{6cm}@{}}
+\toprule
+Risk & Level & Mitigation \\
+\midrule
+Bangla text renders incorrectly in GUI & High & Install Noto Bengali font; fall back to PyQt/web UI \\
+Poor answer accuracy & Medium & Expand keywords; test with real sentences \\
+Raspberry Pi hardware failure & Low & Regular Git backups, spare SD card \\
+Schedule slip & Medium & Voice module is optional and cut first \\
+\bottomrule
+\end{tabular}
+
+\section{Budget}\label{sec:budget}
+Raspberry Pi 4, microSD, power supply, case, and display. Fill in local prices.
+Software is free and open source.
+
+\section{Testing Plan}
+Unit tests for \texttt{BanglaNLP} and \texttt{KnowledgeBase}; integration tests for
+the chat flow; user testing with at least 10 students; accuracy target: at least 80\%
+correct answers on 50 test questions.
+
+\section{UML Diagrams}
+\begin{figure}[H]\centering\includegraphics[width=0.8\textwidth]{figures/dfd.png}\caption{Data Flow Diagram (Level 0)}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=0.7\textwidth]{figures/usecase.png}\caption{Use Case Diagram}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=0.6\textwidth]{figures/activity.png}\caption{Activity Diagram}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=0.8\textwidth]{figures/erd.png}\caption{Entity Relationship Diagram}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=0.9\textwidth]{figures/class.png}\caption{Class Diagram}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=0.8\textwidth]{figures/object.png}\caption{Object Diagram}\end{figure}
+
+\section{Implementation}
+The prototype (\texttt{src/chatbot\_app.py}) implements six classes from the class
+diagram: \texttt{Message}, \texttt{KnowledgeBase}, \texttt{BanglaNLP},
+\texttt{ChatRepository}, \texttt{ChatBot}, and \texttt{ChatUI}.
+\lstinputlisting[language=Python]{../src/chatbot_app.py}
+
+\section{Conclusion}
+The project delivers a low-cost, offline Bangla chatbot and demonstrates a full
+software-engineering lifecycle from proposal to tested prototype.
+
+\begin{thebibliography}{9}
+\bibitem{pi} Raspberry Pi Foundation, \emph{Raspberry Pi Documentation}, raspberrypi.com.
+\bibitem{py} Python Software Foundation, \emph{Python 3 Documentation}.
+\bibitem{uml} M. Fowler, \emph{UML Distilled}, Addison-Wesley.
+\bibitem{sw} I. Sommerville, \emph{Software Engineering}, Pearson.
+\end{thebibliography}
+\end{document}
