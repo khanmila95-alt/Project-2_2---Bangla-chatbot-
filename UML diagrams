@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+rectangle "User" as U
+rectangle "Admin" as A
+usecase "1.0\nProcess Bangla\nInput" as P1
+usecase "2.0\nMatch Intent" as P2
+usecase "3.0\nGenerate\nReply" as P3
+usecase "4.0\nManage\nKnowledge" as P4
+database "D1: Knowledge Base" as D1
+database "D2: Chat History" as D2
+
+U --> P1 : Bangla question
+P1 --> P2 : Tokens
+P2 --> D1 : Query keywords
+D1 --> P2 : Matching entry
+P2 --> P3 : Matched answer / none
+P3 --> D2 : Save messages
+P3 --> U : Bangla reply
+A --> P4 : New / edited entries
+P4 --> D1 : Update
+@enduml
